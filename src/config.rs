@@ -15,7 +15,7 @@ impl Config {
     pub fn new() -> Self {
         Self {
             mode: Mode::Multiply,
-            range: (1..=10),
+            range: (2..=10),
         }
     }
 
@@ -32,15 +32,15 @@ impl Config {
     }
 
     pub fn get_variants() -> Vec<&'static str> {
-        vec!["Small (1-10)", "Big (11-100)", "All (1-100)"]
+        vec!["Small (2-10)", "Big (11-100)", "All (2-100)"]
     }
 
     pub fn get_variant(idx: usize) -> RangeInclusive<u16> {
         match idx {
-            0 => 1..=10,
+            0 => 2..=10,
             1 => 11..=100,
-            2 => 1..=100,
-            _ => 1..=10,
+            2 => 2..=100,
+            _ => 2..=10,
         }
     }
 }
