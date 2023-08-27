@@ -2,7 +2,11 @@ use colored::Colorize;
 use kopfrechner::run;
 
 fn main() {
-    println!("Welcome to {}!", "Kopfrechner".green().bold());
+    println!(
+        "{} v{}",
+        "Kopfrechner".green().bold(),
+        env!("CARGO_PKG_VERSION")
+    );
 
     run();
 
