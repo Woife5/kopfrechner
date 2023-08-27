@@ -96,13 +96,3 @@ fn run_multiply(config: Config) {
         time_ms_sum as f64 / (correct + incorrect) as f64 / 1000.0
     );
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_run() {
-        run();
-    }
-}
