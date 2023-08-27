@@ -74,7 +74,7 @@ fn run_multiply(config: Config) {
             "Correct!".green()
         } else {
             incorrect += 1;
-            "Wrong!".red()
+            format!("Wrong! ({:3})", result).red()
         };
 
         println!(
