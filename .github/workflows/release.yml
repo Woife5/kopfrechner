@@ -14,12 +14,15 @@ jobs:
         include:
           - target: x86_64-pc-windows-gnu
             name: windows
+            content_type: application/zip
             archive: zip
           - target: x86_64-unknown-linux-musl
             name: linux
+            content_type: application/x-gzip
             archive: tar.gz
           - target: x86_64-apple-darwin
             name: macos
+            content_type: application/zip
             archive: zip
     steps:
       - uses: actions/checkout@master
@@ -43,4 +46,4 @@ jobs:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: ${{ steps.compile.outputs.BUILT_ARCHIVE }}
           asset_name: ${{ matrix.name }}
-          # asset_content_type: application/zip
+          asset_content_type: ${{ matrix.content_type }}
