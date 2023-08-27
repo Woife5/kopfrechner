@@ -1,6 +1,9 @@
+use colored::Colorize;
 use kopfrechner::run;
 
 fn main() {
+    println!("Welcome to {}!", "Kopfrechner".green().bold());
+
     run();
 
     // wait for a keypress before exiting

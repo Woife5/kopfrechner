@@ -9,28 +9,33 @@ use std::io::{self, Write};
 use crate::config::Mode;
 
 pub fn run() {
-    println!("Welcome to {}!", "Kopfrechner".green().bold());
+    loop {
+        let range = Select::with_theme(&ColorfulTheme::default())
+            .with_prompt("Select variant")
+            .items(&Config::get_variants())
+            .default(0)
+            .interact_opt();
 
-    let range = Select::with_theme(&ColorfulTheme::default())
-        .with_prompt("Select variant")
-        .items(&Config::get_variants())
-        .default(0)
-        .interact();
+        let range = match range {
+            Ok(v) => match v {
+                Some(v) => Config::get_variant(v),
+                None => break,
+            },
+            Err(..) => {
+                println!("No variant selected, exiting program.");
+                return;
+            }
+        };
 
-    let range = match range {
-        Ok(v) => Config::get_variant(v),
-        Err(..) => {
-            println!("No variant selected! Defaulting to Small (2-10).");
-            2..=10
-        }
-    };
+        let config = Config {
+            mode: Mode::Multiply,
+            range,
+        };
 
-    let config = Config {
-        mode: Mode::Multiply,
-        range,
-    };
+        run_multiply(config);
 
-    run_multiply(config);
+        println!();
+    }
 }
 
 fn run_multiply(config: Config) {
