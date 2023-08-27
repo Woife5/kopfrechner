@@ -17,11 +17,8 @@ pub fn run() {
             .interact_opt();
 
         let range = match range {
-            Ok(v) => match v {
-                Some(v) => Config::get_variant(v),
-                None => break,
-            },
-            Err(..) => {
+            Ok(Some(v)) => Config::get_variant(v),
+            _ => {
                 println!("No variant selected, exiting program.");
                 return;
             }
@@ -63,18 +60,16 @@ fn run_multiply(config: Config) {
                 .expect("Failed to read from stdin");
             let input_text = input_text.trim();
 
-            match input_text.parse::<usize>() {
-                Ok(i) => break i,
-                Err(..) => match input_text {
-                    "q" => break 'outer,
-                    "exit" => break 'outer,
-                    "quit" => break 'outer,
-                    _ => {
+            match input_text {
+                "q" | "exit" | "quit" => break 'outer,
+                _ => match input_text.parse::<usize>() {
+                    Ok(v) => break v,
+                    Err(_) => {
                         println!("\rNot a valid number, try again.");
                         continue;
                     }
                 },
-            };
+            }
         };
 
         let elapsed = start_time.elapsed();

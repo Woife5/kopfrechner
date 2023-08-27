@@ -37,7 +37,7 @@ jobs:
           ARCHIVE_TYPES: ${{ matrix.archive }}
           ARCHIVE_NAME: ${{ matrix.name }}
           UPLOAD_MODE: none
-          MINIFY: true
+          # MINIFY: true # this currently causes windows defender to block the binary
       - name: Upload artifact
         uses: actions/upload-release-asset@v1
         env:
