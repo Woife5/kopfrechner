@@ -1,5 +1,7 @@
 [package]
 name = "kopfrechner"
+authors = ["Wolfgang Schwendtbauer"]
+repository = "https://github.com/Woife5/kopfrechner"
 version = "0.1.0"
 edition = "2021"
 
