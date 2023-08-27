@@ -3,9 +3,8 @@ pub mod config;
 use colored::Colorize;
 use config::Config;
 use dialoguer::{theme::ColorfulTheme, Select};
-use std::io::{self, Write};
-
 use rand::Rng;
+use std::io::{self, Write};
 
 use crate::config::Mode;
 
@@ -41,13 +40,14 @@ fn run_multiply(config: Config) {
     let mut incorrect: usize = 0;
     let mut time_ms_sum: u128 = 0;
 
+    println!("At any point you can enter 'q' to quit and display statistics.");
     loop {
         let n1: usize = rng.gen_range(config.range.clone()).into();
         let n2: usize = rng.gen_range(config.range.clone()).into();
         let result = n1 * n2;
 
         print!("{:2} * {:2} = ", n1, n2);
-        let _ = io::stdout().flush();
+        let _ = io::stdout().flush(); // flush stdout to make sure the prompt is displayed
 
         let start_time = std::time::Instant::now();
 
