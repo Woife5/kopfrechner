@@ -20,8 +20,8 @@ pub fn run() {
     let range = match range {
         Ok(v) => Config::get_variant(v),
         Err(..) => {
-            println!("No variant selected! Defaulting to Small (1-10).");
-            1..=10
+            println!("No variant selected! Defaulting to Small (2-10).");
+            2..=10
         }
     };
 
@@ -41,26 +41,35 @@ fn run_multiply(config: Config) {
     let mut time_ms_sum: u128 = 0;
 
     println!("At any point you can enter 'q' to quit and display statistics.");
-    loop {
+    'outer: loop {
         let n1: usize = rng.gen_range(config.range.clone()).into();
         let n2: usize = rng.gen_range(config.range.clone()).into();
         let result = n1 * n2;
 
-        print!("{:2} * {:2} = ", n1, n2);
-        let _ = io::stdout().flush(); // flush stdout to make sure the prompt is displayed
-
         let start_time = std::time::Instant::now();
 
-        let mut input_text = String::new();
-        io::stdin()
-            .read_line(&mut input_text)
-            .expect("Failed to read from stdin");
-        let answer = match input_text.trim().parse::<usize>() {
-            Ok(i) => i,
-            Err(..) => {
-                println!("Not a valid number, breaking.");
-                break;
-            }
+        let answer = loop {
+            print!("{:2} * {:2} = ", n1, n2);
+            let _ = io::stdout().flush(); // flush stdout to make sure the prompt is displayed
+
+            let mut input_text = String::new();
+            io::stdin()
+                .read_line(&mut input_text)
+                .expect("Failed to read from stdin");
+            let input_text = input_text.trim();
+
+            match input_text.parse::<usize>() {
+                Ok(i) => break i,
+                Err(..) => match input_text {
+                    "q" => break 'outer,
+                    "exit" => break 'outer,
+                    "quit" => break 'outer,
+                    _ => {
+                        println!("\rNot a valid number, try again.");
+                        continue;
+                    }
+                },
+            };
         };
 
         let elapsed = start_time.elapsed();
