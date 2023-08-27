@@ -13,15 +13,15 @@ jobs:
       matrix:
         include:
           - target: x86_64-pc-windows-gnu
-            name: windows
+            name: kopfrechner-windows
             content_type: application/zip
             archive: zip
           - target: x86_64-unknown-linux-musl
-            name: linux
+            name: kopfrechner-linux
             content_type: application/x-gzip
             archive: tar.gz
           - target: x86_64-apple-darwin
-            name: macos
+            name: kopfrechner-macos
             content_type: application/zip
             archive: zip
     steps:
@@ -37,7 +37,6 @@ jobs:
           ARCHIVE_TYPES: ${{ matrix.archive }}
           ARCHIVE_NAME: ${{ matrix.name }}
           UPLOAD_MODE: none
-          MINIFY: true
       - name: Upload artifact
         uses: actions/upload-release-asset@v1
         env:
