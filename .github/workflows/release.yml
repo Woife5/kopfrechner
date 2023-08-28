@@ -7,70 +7,36 @@ on:
 jobs:
   release:
     name: Release ${{ matrix.target }}
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         include:
-          - target: x86_64-pc-windows-msvc
-            os: windows-latest
+          - target: x86_64-pc-windows-gnu
             name: kopfrechner-windows
-            content_type: application/zip
-            archive: zip
           - target: x86_64-unknown-linux-musl
-            os: ubuntu-latest
-            name: kopfrechner-linux-x86_64
-            content_type: application/x-gzip
-            archive: tar.gz
-          - target: aarch64-unknown-linux-musl
-            os: ubuntu-latest
-            name: kopfrechner-linux-aarch64
-            content_type: application/x-gzip
-            archive: tar.gz
-          - target: universal-apple-darwin
-            os: macos-latest
-            name: kopfrechner-macos
-            content_type: application/zip
-            archive: zip
-
+            name: kopfrechner-linux
+          - target: x86_64-apple-darwin
+            name: kopfrechner-macos-intel
     steps:
       - uses: actions/checkout@master
-
-      - uses: dtolnay/rust-toolchain@stable
-        with:
-          toolchain: stable
-
-      - name: Cache dependencies
-        uses: actions/cache@v3
+      - name: Compile
+        id: compile
+        uses: rust-build/rust-build.action@v1.4.3
         env:
-          cache-name: cache-dependencies
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          path: |
-            ~/.cargo/.crates.toml
-            ~/.cargo/.crates2.json
-            ~/.cargo/bin
-            ~/.cargo/registry/index
-            ~/.cargo/registry/cache
-            target
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('Cargo.lock') }}
-
-      - name: Compile binary
-        run: cargo build --release --target ${{ matrix.target }}
-
-      - name: Archive binary
-        run: |
-          if [ "${{ matrix.archive }}" = "zip" ]; then
-            zip -j kopfrechner.zip target/${{ matrix.target }}/release/kopfrechner
-          else
-            tar -czf kopfrechner.tar.gz target/${{ matrix.target }}/release/kopfrechner
-          fi
-      
+          TOOLCHAIN_VERSION: stable
+          RUSTTARGET: ${{ matrix.target }}
+          ARCHIVE_TYPES: zip
+          UPLOAD_MODE: none
+          # MINIFY: true # this currently causes windows defender to block the binary
       - name: Upload artifact
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./kopfrechner.${{ matrix.archive }}
-          asset_name: ${{ matrix.name }}-${{ github.event.release.tag_name }}.${{ matrix.archive }}
-          asset_content_type: ${{ matrix.content_type }}
+          asset_path: ${{ steps.compile.outputs.BUILT_ARCHIVE }}
+          asset_name: ${{ matrix.name }}-${{ github.event.release.tag_name }}.zip
+          asset_content_type: application/zip
