@@ -69,7 +69,7 @@ fn do_update() -> Result<(), Box<dyn std::error::Error>> {
     let status = self_update::backends::github::Update::configure()
         .repo_owner("woife5")
         .repo_name("kopfrechner")
-        .bin_name("github")
+        .bin_name("kopfrechner")
         .show_download_progress(true)
         .current_version(cargo_crate_version!())
         .build()?
