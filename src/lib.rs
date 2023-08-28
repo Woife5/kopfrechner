@@ -1,6 +1,7 @@
 pub mod config;
 pub mod modes;
 
+use colored::Colorize;
 use config::Config;
 use dialoguer::{theme::ColorfulTheme, Select};
 use self_update::cargo_crate_version;
@@ -56,6 +57,9 @@ pub fn run() {
             }
             Mode::Update => {
                 let _ = do_update();
+
+                #[cfg(windows)]
+                println!("{}", "Temp directory has been cleaned up.".yellow().bold());
             }
         }
 
@@ -76,8 +80,18 @@ fn do_update() -> Result<(), Box<dyn std::error::Error>> {
         .update()?;
 
     if status.updated() {
-        println!("Updated to version {}", status.version());
+        println!("Updated to version {}", status.version().blue().bold());
         println!("The program will exit now, please restart it to use the new version.");
+
+        #[cfg(windows)]
+        println!(
+            "{}",
+            "Rerun the update check to clean up any temporary files."
+                .yellow()
+                .bold()
+        );
+
+        let _ = std::io::stdin().read_line(&mut String::new());
         std::process::exit(0);
     }
 

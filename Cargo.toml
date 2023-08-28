@@ -2,11 +2,11 @@
 name = "kopfrechner"
 authors = ["Wolfgang Schwendtbauer"]
 repository = "https://github.com/Woife5/kopfrechner"
-version = "0.3.3"
+version = "0.3.2"
 edition = "2021"
 
 [dependencies]
 colored = "2.0.4"
 dialoguer = "0.10.4"
 rand = "0.8.5"
-self_update = { version = "0.37.0", features = ["archive-zip" ] }
+self_update = { version = "0.37.0", features = [ "archive-zip", "compression-zip-deflate" ] }
