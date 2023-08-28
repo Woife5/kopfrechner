@@ -1,20 +1,20 @@
-pub mod config;
+pub mod main_menu;
 pub mod modes;
 
 use colored::Colorize;
-use config::Config;
 use dialoguer::{theme::ColorfulTheme, Select};
+use main_menu::Config;
 use self_update::cargo_crate_version;
 
 use crate::{
-    config::Mode,
+    main_menu::Mode,
     modes::{multiplication, number_tower},
 };
 
 pub fn run() {
     loop {
         let mode = Select::with_theme(&ColorfulTheme::default())
-            .with_prompt("Select mode")
+            .with_prompt("Main menu")
             .items(&Config::get_modes())
             .default(0)
             .interact_opt();
@@ -29,30 +29,24 @@ pub fn run() {
 
         match mode {
             Mode::Multiply => {
-                let range = Select::with_theme(&ColorfulTheme::default())
+                let range_selection = Select::with_theme(&ColorfulTheme::default())
                     .with_prompt("Select variant")
                     .items(&multiplication::get_variants())
                     .default(0)
                     .interact_opt();
 
-                let range = match range {
-                    Ok(Some(v)) => multiplication::get_variant(v),
-                    _ => {
-                        println!("No variant selected, exiting program.");
-                        return;
-                    }
-                };
-
-                multiplication::run(range);
+                if let Ok(Some(r)) = range_selection {
+                    let range = multiplication::get_variant(r);
+                    multiplication::run(range);
+                } else {
+                    println!("Invalid selection.");
+                }
             }
             Mode::NumberTower => {
                 let input = modes::get_number_input("Enter start number: ".to_string());
                 match input {
                     Some(number) => number_tower::run(number),
-                    None => {
-                        println!("No number entered, exiting program.");
-                        return;
-                    }
+                    None => println!("No number entered."),
                 }
             }
             Mode::Update => {
@@ -61,6 +55,7 @@ pub fn run() {
                 #[cfg(windows)]
                 println!("{}", "Temp directory has been cleaned up.".yellow().bold());
             }
+            Mode::Exit => std::process::exit(0),
         }
 
         println!();
