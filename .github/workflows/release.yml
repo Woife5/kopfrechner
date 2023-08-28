@@ -7,43 +7,70 @@ on:
 jobs:
   release:
     name: Release ${{ matrix.target }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         include:
-          - target: x86_64-pc-windows-gnu
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
             name: kopfrechner-windows
             content_type: application/zip
             archive: zip
           - target: x86_64-unknown-linux-musl
-            name: kopfrechner-linux
+            os: ubuntu-latest
+            name: kopfrechner-linux-x86_64
             content_type: application/x-gzip
             archive: tar.gz
-          - target: x86_64-apple-darwin
+          - target: aarch64-unknown-linux-musl
+            os: ubuntu-latest
+            name: kopfrechner-linux-aarch64
+            content_type: application/x-gzip
+            archive: tar.gz
+          - target: universal-apple-darwin
+            os: macos-latest
             name: kopfrechner-macos
             content_type: application/zip
             archive: zip
+
     steps:
       - uses: actions/checkout@master
-      - name: Compile
-        id: compile
-        uses: rust-build/rust-build.action@v1.4.3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: dtolnay/rust-toolchain@stable
         with:
-          TOOLCHAIN_VERSION: stable
-          RUSTTARGET: ${{ matrix.target }}
-          ARCHIVE_TYPES: ${{ matrix.archive }}
-          ARCHIVE_NAME: ${{ matrix.name }}
-          UPLOAD_MODE: none
-          # MINIFY: true # this currently causes windows defender to block the binary
+          toolchain: stable
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-dependencies
+        with:
+          path: |
+            ~/.cargo/.crates.toml
+            ~/.cargo/.crates2.json
+            ~/.cargo/bin
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            target
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('Cargo.lock') }}
+
+      - name: Compile binary
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Archive binary
+        run: |
+          if [ "${{ matrix.archive }}" = "zip" ]; then
+            zip -j kopfrechner.zip target/${{ matrix.target }}/release/kopfrechner
+          else
+            tar -czf kopfrechner.tar.gz target/${{ matrix.target }}/release/kopfrechner
+          fi
+      
       - name: Upload artifact
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ${{ steps.compile.outputs.BUILT_ARCHIVE }}
+          asset_path: ./kopfrechner.${{ matrix.archive }}
           asset_name: ${{ matrix.name }}-${{ github.event.release.tag_name }}.${{ matrix.archive }}
           asset_content_type: ${{ matrix.content_type }}
