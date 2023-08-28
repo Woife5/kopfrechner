@@ -56,7 +56,6 @@ pub fn run() {
             }
             Mode::Update => {
                 let _ = do_update();
-                return;
             }
         }
 
@@ -66,6 +65,7 @@ pub fn run() {
 
 fn do_update() -> Result<(), Box<dyn std::error::Error>> {
     println!("Checking for updates...");
+
     let status = self_update::backends::github::Update::configure()
         .repo_owner("woife5")
         .repo_name("kopfrechner")
@@ -74,7 +74,13 @@ fn do_update() -> Result<(), Box<dyn std::error::Error>> {
         .current_version(cargo_crate_version!())
         .build()?
         .update()?;
+
     println!("Update status: `{}`!", status.version());
+
+    if status.updated() {
+        println!("Please restart the program to use the new version.");
+        std::process::exit(0);
+    }
 
     Ok(())
 }
