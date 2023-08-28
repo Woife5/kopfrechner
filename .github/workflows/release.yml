@@ -26,5 +26,4 @@ jobs:
           TOOLCHAIN_VERSION: stable
           RUSTTARGET: ${{ matrix.target }}
           ARCHIVE_TYPES: zip
-          UPLOAD_MODE: github
           # MINIFY: true # this currently causes windows defender to block the binary
