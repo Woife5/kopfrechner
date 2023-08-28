@@ -3,6 +3,7 @@ pub mod modes;
 
 use config::Config;
 use dialoguer::{theme::ColorfulTheme, Select};
+use self_update::cargo_crate_version;
 
 use crate::{
     config::Mode,
@@ -53,8 +54,27 @@ pub fn run() {
                     }
                 }
             }
+            Mode::Update => {
+                let _ = do_update();
+                return;
+            }
         }
 
         println!();
     }
+}
+
+fn do_update() -> Result<(), Box<dyn std::error::Error>> {
+    println!("Checking for updates...");
+    let status = self_update::backends::github::Update::configure()
+        .repo_owner("woife5")
+        .repo_name("kopfrechner")
+        .bin_name("kopfrechner")
+        .show_download_progress(true)
+        .current_version(cargo_crate_version!())
+        .build()?
+        .update()?;
+    println!("Update status: `{}`!", status.version());
+
+    Ok(())
 }

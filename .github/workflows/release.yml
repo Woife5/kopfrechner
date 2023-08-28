@@ -13,11 +13,8 @@ jobs:
       matrix:
         include:
           - target: x86_64-pc-windows-gnu
-            name: kopfrechner-windows
           - target: x86_64-unknown-linux-musl
-            name: kopfrechner-linux
           - target: x86_64-apple-darwin
-            name: kopfrechner-macos-intel
     steps:
       - uses: actions/checkout@master
       - name: Compile
@@ -29,14 +26,5 @@ jobs:
           TOOLCHAIN_VERSION: stable
           RUSTTARGET: ${{ matrix.target }}
           ARCHIVE_TYPES: zip
-          UPLOAD_MODE: none
+          UPLOAD_MODE: github
           # MINIFY: true # this currently causes windows defender to block the binary
-      - name: Upload artifact
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ${{ steps.compile.outputs.BUILT_ARCHIVE }}
-          asset_name: ${{ matrix.name }}-${{ github.event.release.tag_name }}.zip
-          asset_content_type: application/zip
