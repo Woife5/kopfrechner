@@ -75,10 +75,9 @@ fn do_update() -> Result<(), Box<dyn std::error::Error>> {
         .build()?
         .update()?;
 
-    println!("Update status: `{}`!", status.version());
-
     if status.updated() {
-        println!("Please restart the program to use the new version.");
+        println!("Updated to version {}", status.version());
+        println!("The program will exit now, please restart it to use the new version.");
         std::process::exit(0);
     }
 

@@ -2,7 +2,7 @@ pub struct Config;
 
 impl Config {
     pub fn get_modes() -> Vec<&'static str> {
-        vec!["Multiply", "Number Tower", "Search for update..."]
+        vec!["Multiply", "Number Tower", "Check for updates"]
     }
 
     pub fn get_mode(idx: usize) -> Mode {
