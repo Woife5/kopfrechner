@@ -1,5 +1,15 @@
 use colored::Colorize;
 
+use super::get_number_input;
+
+pub fn prepare_and_run() {
+    let input = get_number_input("Enter start number: ".to_string());
+    match input {
+        Some(number) => run(number),
+        None => println!("No number entered."),
+    }
+}
+
 pub fn run(start: usize) {
     let mut current = start;
 

@@ -3,7 +3,7 @@ use std::io::{self, Write};
 pub mod multiplication;
 pub mod number_tower;
 
-pub fn get_number_input(prompt: String) -> Option<usize> {
+fn get_number_input(prompt: String) -> Option<usize> {
     loop {
         print!("{}", prompt);
         let _ = io::stdout().flush(); // flush stdout to make sure the prompt is displayed
