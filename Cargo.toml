@@ -22,5 +22,3 @@ cargo-dist-version = "0.2.0"
 ci = ["github"]
 installers = []
 targets = ["x86_64-unknown-linux-gnu", "x86_64-apple-darwin", "x86_64-pc-windows-msvc", "aarch64-apple-darwin"]
-windows-archive = ".zip"
-unix-archive = ".zip"
