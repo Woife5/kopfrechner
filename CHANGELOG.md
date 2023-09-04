@@ -1,4 +1,4 @@
-# Unreleased 
+# 0.4.1
 
 - add a dependency for `tar` decompression
 

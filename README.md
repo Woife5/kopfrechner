@@ -2,15 +2,9 @@
 
 ## Installation
 
-Go to [the releases](https://github.com/Woife5/kopfrechner/releases/latest) page to download the latest version. Use the corresponding file for your operating system:
-
-| OS      | File                                               |
-| ------- | -------------------------------------------------- |
-| Windows | `kopfrechner_vX.X.X_x86_64-pc-windows-gnu.zip`     |
-| MacOS   | `kopfrechner_vX.X.X_x86_64-apple-darwin.zip`       |
-| Linux   | `kopfrechner_vX.X.X_x86_64-unknown-linux-musl.zip` |
-
-Extract the zip file and run the executable.
+Go to [the releases](https://github.com/Woife5/kopfrechner/releases/latest) page to download the latest version.
+Choose the corresponding archive for your operating system.
+Once downloaded, extract the archive and run the executable (`kopfrechner.exe` / `kopfrechner`).
 
 ### Updating
 
