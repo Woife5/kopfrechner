@@ -2,6 +2,7 @@ use std::io::{self, Write};
 
 pub mod multiplication;
 pub mod number_tower;
+pub mod update;
 
 fn get_number_input(prompt: String) -> Option<usize> {
     loop {
