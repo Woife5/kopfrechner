@@ -20,7 +20,7 @@ fn get_number_input(prompt: String) -> Option<usize> {
             _ => match input_text.parse::<usize>() {
                 Ok(v) => return Some(v),
                 Err(_) => {
-                    println!("\rNot a valid number, try again.");
+                    println!("\rNot a valid number, try again. (Enter 'q' to quit)");
                     continue;
                 }
             },

@@ -76,8 +76,8 @@ pub fn run(range: RangeInclusive<u16>) {
     }
 
     println!("\n{}", "Results:".bold());
-    println!("{}: {}", "Correct".green().italic(), correct,);
-    println!("{}: {}", "Incorrect".red().italic(), incorrect,);
+    println!("{}: {}", "Correct".green().italic(), correct);
+    println!("{}: {}", "Incorrect".red().italic(), incorrect);
     println!(
         "{}: {:.2}s",
         "Average time".italic(),

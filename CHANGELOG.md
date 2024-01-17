@@ -1,3 +1,8 @@
+# 0.4.3
+
+- Number tower now has to be filled out instead of being calculated automatically.
+- Number tower now counts seconds.
+
 # 0.4.2
 
 - update `self_update` dependency, which is now able to replace running files on Windows.
