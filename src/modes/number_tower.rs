@@ -13,19 +13,20 @@ pub fn prepare_and_run() {
 fn run_iteration(current: &usize, padding: ColoredString) -> Result<(), ()> {
     let input = match get_number_input("".to_string()) {
         Some(v) => v,
-        None =>  return Err(()),
+        None => return Err(()),
     };
 
-    let input_str = format!("{:>20}", input);
     let result_text = if input == *current {
         "Correct!".green()
     } else {
-        format!("Wrong! ({})", current).red()
+        format!("Wrong! (your input: {})", input).red()
     };
 
     // Move cursor up one line and clear the line
     print!("\x1B[1A\x1B[2K\r");
-    println!("{:>20} {} {}", input_str, padding, result_text);
+
+    let current_formatted = format!("{:>20}", *current);
+    println!("{:>20} {} {}", current_formatted, padding, result_text);
     Ok(())
 }
 

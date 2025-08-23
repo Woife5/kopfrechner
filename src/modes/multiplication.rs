@@ -2,7 +2,7 @@ use std::ops::RangeInclusive;
 
 use colored::Colorize;
 use dialoguer::{theme::ColorfulTheme, Select};
-use rand::Rng;
+use rand::random_range;
 
 use crate::modes::get_number_input;
 
@@ -32,16 +32,14 @@ pub fn prepare_and_run() {
 }
 
 pub fn run(range: RangeInclusive<u16>) {
-    let mut rng = rand::thread_rng();
-
     let mut correct: usize = 0;
     let mut incorrect: usize = 0;
     let mut time_ms_sum: u128 = 0;
 
     println!("At any point you can enter 'q' to quit and display statistics.");
     loop {
-        let n1: usize = rng.gen_range(range.clone()).into();
-        let n2: usize = rng.gen_range(range.clone()).into();
+        let n1: usize = random_range(range.clone()).into();
+        let n2: usize = random_range(range.clone()).into();
         let result = n1 * n2;
 
         let start_time = std::time::Instant::now();

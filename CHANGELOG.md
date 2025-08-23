@@ -1,3 +1,8 @@
+# 0.4.4
+
+- update all dependencies to the latest version
+- number tower shows correct result first instead of user input
+
 # 0.4.3
 
 - Number tower now has to be filled out instead of being calculated automatically.
