@@ -1,3 +1,7 @@
+# 0.5.0
+
+- add option to specify number that must always appear in multiplication
+
 # 0.4.4
 
 - update all dependencies to the latest version
