@@ -1,3 +1,7 @@
+# 0.5.1
+
+- fix number enforcement not working
+
 # 0.5.0
 
 - add option to specify number that must always appear in multiplication

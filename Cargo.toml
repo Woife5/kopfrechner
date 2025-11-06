@@ -2,7 +2,7 @@
 name = "kopfrechner"
 authors = ["Wolfgang Schwendtbauer"]
 repository = "https://github.com/Woife5/kopfrechner"
-version = "0.5.0"
+version = "0.5.1"
 edition = "2021"
 
 [dependencies]

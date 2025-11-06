@@ -88,7 +88,7 @@ pub fn run(range: RangeInclusive<u16>, must_include: &[u16]) {
 
     println!("At any point you can enter 'q' to quit and display statistics.");
     loop {
-        let n1: usize = if must_include.is_empty() {
+        let n1: usize = if !must_include.is_empty() {
             must_include[random_range(0..must_include.len())] as usize
         } else {
             random_range(range.clone()).into()
