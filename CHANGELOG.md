@@ -1,3 +1,10 @@
+# 0.6.0
+
+- update `self_update` to 1.3.0
+- fix in-app updates for cargo-dist archives on macOS, Linux, and Windows
+- verify GitHub release asset SHA-256 digests before installation
+- raise the minimum supported Rust version to 1.88
+
 # 0.5.1
 
 - fix number enforcement not working
