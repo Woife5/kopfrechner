@@ -8,7 +8,7 @@ use modes::{multiplication, number_tower, update};
 pub fn run() {
     let mode = Select::with_theme(&ColorfulTheme::default())
         .with_prompt("Main menu")
-        .items(&get_modes())
+        .items(get_modes())
         .default(0)
         .interact();
 

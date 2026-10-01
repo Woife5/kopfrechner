@@ -1,3 +1,9 @@
+# 0.6.1
+
+- update `dialoguer` to 0.12.0 and `rand` to 0.10.3
+- refresh transitive dependencies
+- update test workflow actions to `actions/checkout` v7 and `actions/cache` v6
+
 # 0.6.0
 
 - update `self_update` to 1.3.0
